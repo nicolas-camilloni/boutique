@@ -21,8 +21,6 @@ SET time_zone = "+00:00";
 --
 -- Base de données :  `boutique`
 --
-CREATE DATABASE IF NOT EXISTS `boutique` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
-USE `boutique`;
 
 -- --------------------------------------------------------
 
@@ -30,8 +28,10 @@ USE `boutique`;
 -- Structure de la table `achats`
 --
 
-DROP TABLE IF EXISTS `achats`;
-CREATE TABLE IF NOT EXISTS `achats` (
+USE dbs781078;
+
+DROP TABLE IF EXISTS `boutique_achats`;
+CREATE TABLE IF NOT EXISTS `boutique_achats` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `id_utilisateur` int(11) NOT NULL,
   `id_article` int(11) NOT NULL,
@@ -44,7 +44,7 @@ CREATE TABLE IF NOT EXISTS `achats` (
 -- Déchargement des données de la table `achats`
 --
 
-INSERT INTO `achats` (`id`, `id_utilisateur`, `id_article`, `quantite`, `prix`) VALUES
+INSERT INTO `boutique_achats` (`id`, `id_utilisateur`, `id_article`, `quantite`, `prix`) VALUES
 (15, 1, 17, 4, 300),
 (16, 1, 43, 4, 79.2);
 
@@ -54,8 +54,8 @@ INSERT INTO `achats` (`id`, `id_utilisateur`, `id_article`, `quantite`, `prix`) 
 -- Structure de la table `articles`
 --
 
-DROP TABLE IF EXISTS `articles`;
-CREATE TABLE IF NOT EXISTS `articles` (
+DROP TABLE IF EXISTS `boutique_articles`;
+CREATE TABLE IF NOT EXISTS `boutique_articles` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `id_categorie` int(11) NOT NULL,
   `nom` varchar(255) NOT NULL,
@@ -72,7 +72,7 @@ CREATE TABLE IF NOT EXISTS `articles` (
 -- Déchargement des données de la table `articles`
 --
 
-INSERT INTO `articles` (`id`, `id_categorie`, `nom`, `prix`, `promo`, `img`, `description`, `stock`, `id_subcat`) VALUES
+INSERT INTO `boutique_articles` (`id`, `id_categorie`, `nom`, `prix`, `promo`, `img`, `description`, `stock`, `id_subcat`) VALUES
 (17, 1, 'Pixie Clips Magimix', 75, 0, 'img/pixieclips.png', 'Pixie est la petite surdouÃ©e de Nespresso. Elle concentre une large palette de fonctionnalitÃ©s innovantes dans une machine Ã©tonnamment compacte.', 496, 2),
 (31, 1, 'Senseo Quadrante', 99, 10, 'img/quadrante.png', 'La nouvelle machine Ã  cafÃ© SENSEOÂ® Quadrante maximise les saveurs du cafÃ© grÃ¢ce Ã  la technologie SENSEOÂ® Booster d\'arÃ´mes permettant Ã  l\'eau d\'entrer en contact avec la totalitÃ© des 50 grains de cafÃ© Ã  la fois, pour un goÃ»t plus riche et intense. Son sÃ©lecteur d\'intensitÃ© permet plus de choix.', 20, 1),
 (30, 1, 'Vertuo Next', 179, 0, 'img/vertuo.png', 'Vertuo Next complÃ¨te la gamme de machines Vertuo . DÃ©couvrez cette nouvelle machine design, au format rÃ©solument urbain et compact. La technologie exclusive Vertuo et toutes ses qualitÃ©s, repensÃ©e pour vous avec 3 finitions de machines et de nombreux coloris.', 100, 2),
@@ -108,11 +108,11 @@ INSERT INTO `articles` (`id`, `id_categorie`, `nom`, `prix`, `promo`, `img`, `de
 -- --------------------------------------------------------
 
 --
--- Structure de la table `avis`
+-- Structure de la table `boutique_avis`
 --
 
-DROP TABLE IF EXISTS `avis`;
-CREATE TABLE IF NOT EXISTS `avis` (
+DROP TABLE IF EXISTS `boutique_avis`;
+CREATE TABLE IF NOT EXISTS `boutique_avis` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `id_utilisateur` int(11) NOT NULL,
   `id_article` int(11) NOT NULL,
@@ -126,7 +126,7 @@ CREATE TABLE IF NOT EXISTS `avis` (
 -- Déchargement des données de la table `avis`
 --
 
-INSERT INTO `avis` (`id`, `id_utilisateur`, `id_article`, `message`, `note`, `date`) VALUES
+INSERT INTO `boutique_avis` (`id`, `id_utilisateur`, `id_article`, `message`, `note`, `date`) VALUES
 (14, 1, 43, 'Les saveurs italiennes sont au rdv!', 5, '2020-04-03 20:20:49'),
 (13, 1, 34, 'Pas mal comme goÃ»t', 3, '2020-04-03 19:49:47'),
 (12, 1, 31, 'TrÃ¨s bonne machine, elle fait le taff!', 5, '2020-04-03 19:49:23'),
@@ -136,11 +136,11 @@ INSERT INTO `avis` (`id`, `id_utilisateur`, `id_article`, `message`, `note`, `da
 -- --------------------------------------------------------
 
 --
--- Structure de la table `categories`
+-- Structure de la table `boutique_categories`
 --
 
-DROP TABLE IF EXISTS `categories`;
-CREATE TABLE IF NOT EXISTS `categories` (
+DROP TABLE IF EXISTS `boutique_categories`;
+CREATE TABLE IF NOT EXISTS `boutique_categories` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `nom` varchar(255) NOT NULL,
   `id_utilisateur` int(11) NOT NULL,
@@ -148,10 +148,10 @@ CREATE TABLE IF NOT EXISTS `categories` (
 ) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
 --
--- Déchargement des données de la table `categories`
+-- Déchargement des données de la table `boutique_categories`
 --
 
-INSERT INTO `categories` (`id`, `nom`, `id_utilisateur`) VALUES
+INSERT INTO `boutique_categories` (`id`, `nom`, `id_utilisateur`) VALUES
 (1, 'Machines', 1),
 (2, 'CafÃ©s', 1),
 (3, 'ThÃ©s', 1);
@@ -159,11 +159,11 @@ INSERT INTO `categories` (`id`, `nom`, `id_utilisateur`) VALUES
 -- --------------------------------------------------------
 
 --
--- Structure de la table `panier`
+-- Structure de la table `boutique_panier`
 --
 
-DROP TABLE IF EXISTS `panier`;
-CREATE TABLE IF NOT EXISTS `panier` (
+DROP TABLE IF EXISTS `boutique_panier`;
+CREATE TABLE IF NOT EXISTS `boutique_panier` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `id_utilisateur` int(11) NOT NULL,
   `id_article` int(11) NOT NULL,
@@ -173,20 +173,20 @@ CREATE TABLE IF NOT EXISTS `panier` (
 ) ENGINE=MyISAM AUTO_INCREMENT=72 DEFAULT CHARSET=latin1;
 
 --
--- Déchargement des données de la table `panier`
+-- Déchargement des données de la table `boutique_panier`
 --
 
-INSERT INTO `panier` (`id`, `id_utilisateur`, `id_article`, `quantite`, `prix`) VALUES
+INSERT INTO `boutique_panier` (`id`, `id_utilisateur`, `id_article`, `quantite`, `prix`) VALUES
 (71, 1, 17, 1, 75);
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `subcategories`
+-- Structure de la table `boutique_subcategories`
 --
 
-DROP TABLE IF EXISTS `subcategories`;
-CREATE TABLE IF NOT EXISTS `subcategories` (
+DROP TABLE IF EXISTS `boutique_subcategories`;
+CREATE TABLE IF NOT EXISTS `boutique_subcategories` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `id_categorie` int(11) NOT NULL,
   `nom` varchar(255) CHARACTER SET utf8 NOT NULL,
@@ -194,10 +194,10 @@ CREATE TABLE IF NOT EXISTS `subcategories` (
 ) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
 
 --
--- Déchargement des données de la table `subcategories`
+-- Déchargement des données de la table `boutique_subcategories`
 --
 
-INSERT INTO `subcategories` (`id`, `id_categorie`, `nom`) VALUES
+INSERT INTO `boutique_subcategories` (`id`, `id_categorie`, `nom`) VALUES
 (1, 1, 'Machines &agrave dosettes'),
 (2, 1, 'Machines &agrave capsules'),
 (3, 1, 'Machines &agrave grains'),
@@ -211,11 +211,11 @@ INSERT INTO `subcategories` (`id`, `id_categorie`, `nom`) VALUES
 -- --------------------------------------------------------
 
 --
--- Structure de la table `utilisateurs`
+-- Structure de la table `boutique_utilisateurs`
 --
 
-DROP TABLE IF EXISTS `utilisateurs`;
-CREATE TABLE IF NOT EXISTS `utilisateurs` (
+DROP TABLE IF EXISTS `boutique_utilisateurs`;
+CREATE TABLE IF NOT EXISTS `boutique_utilisateurs` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `login` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
@@ -230,7 +230,7 @@ CREATE TABLE IF NOT EXISTS `utilisateurs` (
 -- Déchargement des données de la table `utilisateurs`
 --
 
-INSERT INTO `utilisateurs` (`id`, `login`, `password`, `mail`, `adresse`, `rank`, `tel`) VALUES
+INSERT INTO `boutique_utilisateurs` (`id`, `login`, `password`, `mail`, `adresse`, `rank`, `tel`) VALUES
 (3, 'nico', '$2y$12$S1nhZqdNgcY/PnmI5.T2weOcW87PHhGoKdMsJbZ3sNYuqLtM38cG6', 'nico@gmail.com', 'nico', 1, '0606060606'),
 (1, 'admin', '$2y$12$I/Z9eb.n4xa8pi3uESRDlezW9mAbmHT8btBwK6HpYegYSyW2/ZOFa', 'admin@gmail.com', 'admin', 1, '0606060606'),
 (4, 'test', '$2y$12$Si5yJGP0TF2xpTOHalxNN.haTZksOxI.6BDoWVSY5NwOma4eoZ5ru', 'test@gmail.com', 'test', 0, '0606060606');

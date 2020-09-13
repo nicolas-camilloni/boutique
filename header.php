@@ -1,6 +1,6 @@
 <?php
 
-$hcat = $bdd->execute("SELECT * FROM categories");
+$hcat = $bdd->execute("SELECT * FROM boutique_categories");
 
 ?>
 
@@ -32,7 +32,7 @@ $hcat = $bdd->execute("SELECT * FROM categories");
                 <article class="iconpanier">
                 <?php
                     $idUtilisateur = $_SESSION["id"];
-                    $countProduits = $bdd->execute("SELECT COUNT(*) FROM panier WHERE id_utilisateur = \"$idUtilisateur\"");
+                    $countProduits = $bdd->execute("SELECT COUNT(*) FROM boutique_panier WHERE id_utilisateur = \"$idUtilisateur\"");
                     if ( !empty($countProduits) ) {
                 ?>
                     <div class="pointp">
@@ -62,7 +62,7 @@ $hcat = $bdd->execute("SELECT * FROM categories");
                         <section class="submenu">
                             <?php
                                 foreach ( $hcat as $key => $value ) {
-                                    $hsubcat = $bdd->execute("SELECT * FROM subcategories WHERE id_categorie = $value[0]");
+                                    $hsubcat = $bdd->execute("SELECT * FROM boutique_subcategories WHERE id_categorie = $value[0]");
                                     ?>
                                         <article class="dropdownsubmenu1">
                                             <a class="link2" href="boutique.php?idcat=<?php echo $value[0]; ?>"><p><?php echo $value[1]; ?></p></a>

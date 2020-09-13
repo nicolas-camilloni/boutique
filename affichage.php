@@ -5,8 +5,8 @@ class Affichage {
 
 public function showCategorie($idCategorie, $showSub, $bdd) {
         
-         $categorie = $bdd->executeassoc("SELECT * FROM categories WHERE id = \"$idCategorie\"");
-         $subcategorie = $bdd->executeassoc("SELECT * FROM subcategories WHERE id = \"$idCategorie\"");
+         $categorie = $bdd->executeassoc("SELECT * FROM boutique_categories WHERE id = \"$idCategorie\"");
+         $subcategorie = $bdd->executeassoc("SELECT * FROM boutique_subcategories WHERE id = \"$idCategorie\"");
          $size = count($subcategorie);
          $i = 0;
          if ( isset($_GET["idcat"]) && !empty($categorie)) {
@@ -28,7 +28,7 @@ public function showCategorie($idCategorie, $showSub, $bdd) {
   
 public function showArticle($idarticle, $bdd) {
         
-        $article = $bdd->executeassoc("SELECT * FROM articles WHERE id = \"$idarticle\"");
+        $article = $bdd->executeassoc("SELECT * FROM boutique_articles WHERE id = \"$idarticle\"");
         $prix = intval($article[0]["prix"]);
         $promo = intval($article[0]["promo"]);
         $newprix = ($prix - (($prix * $promo)/100));
@@ -55,7 +55,7 @@ public function showArticle($idarticle, $bdd) {
 
 public function showArticles($id_categorie, $bdd){
 
-        $showArticles = $bdd->executeassoc("SELECT * FROM articles WHERE id_categorie = \"$id_categorie\"");
+        $showArticles = $bdd->executeassoc("SELECT * FROM boutique_articles WHERE id_categorie = \"$id_categorie\"");
         $size = count($showArticles);
         $i = 0;
         while ($i < $size) 
@@ -74,7 +74,7 @@ public function showArticles($id_categorie, $bdd){
 
 public function showCategories($bdd){
 
-        $showCategories = $bdd->executeassoc("SELECT * FROM categories");
+        $showCategories = $bdd->executeassoc("SELECT * FROM boutique_categories");
         $size = count($showCategories);
         $i = 0;
         while ($i < $size) 
@@ -126,7 +126,7 @@ public function showRating($rating){
 
 public function showLastreviews($bdd){
 
-        $lastreviews = $bdd->executeassoc("SELECT * FROM avis INNER JOIN articles ON avis.id_article = articles.id INNER JOIN utilisateurs ON avis.id_utilisateur = utilisateurs.id ORDER BY avis.date DESC LIMIT 3 "); 
+        $lastreviews = $bdd->executeassoc("SELECT * FROM boutique_avis INNER JOIN boutique_articles ON boutique_avis.id_article = boutique_articles.id INNER JOIN boutique_utilisateurs ON boutique_avis.id_utilisateur = boutique_utilisateurs.id ORDER BY boutique_avis.date DESC LIMIT 3 "); 
         $size = count($lastreviews);
         $x = 0;
         while ($x < $size) {
@@ -178,7 +178,7 @@ public function showLastreviews($bdd){
 }
 public function showLastproducts($bdd){
 
-        $lastproducts = $bdd->executeassoc("SELECT * FROM articles ORDER BY id DESC LIMIT 3"); 
+        $lastproducts = $bdd->executeassoc("SELECT * FROM boutique_articles ORDER BY id DESC LIMIT 3"); 
         $prix = intval($lastproducts[0]["prix"]);
         $promo = intval($lastproducts[0]["promo"]);
         $newprix = ($prix - (($prix * $promo)/100));
@@ -220,12 +220,12 @@ public function showLastproducts($bdd){
 
 public function showTopproducts($bdd){
 
-        $bestreviews = $bdd->executeassoc("SELECT AVG (note) as moyenne, id_article FROM avis GROUP BY id_article ORDER BY moyenne DESC LIMIT 3");
+        $bestreviews = $bdd->executeassoc("SELECT AVG (note) as moyenne, id_article FROM boutique_avis GROUP BY id_article ORDER BY moyenne DESC LIMIT 3");
         foreach ( $bestreviews as $key => $value ) {
         if ( !empty($bestreviews) ) {
             $idtemp = $value['id_article'];
         }
-        $infoprod = $bdd->executeassoc("SELECT * FROM articles WHERE id= \"$idtemp\"");
+        $infoprod = $bdd->executeassoc("SELECT * FROM boutique_articles WHERE id= \"$idtemp\"");
         $prix2 = intval($infoprod[0]["prix"]);
         $promo2 = intval($infoprod[0]["promo"]);
         $newprix = ($prix2 - (($prix2 * $promo2)/100));
@@ -260,14 +260,14 @@ public function showTopproducts($bdd){
 
 public function showShop($idcat, $idsubcat, $bdd) {
     if ( isset($idsubcat) && $idsubcat != "0"  && isset($idcat) ) {
-        $products = $bdd->execute("SELECT * FROM articles WHERE id_categorie = $idcat AND id_subcat = $idsubcat");
-        $cat = $bdd->execute("SELECT * FROM categories");
+        $products = $bdd->execute("SELECT * FROM boutique_articles WHERE id_categorie = $idcat AND id_subcat = $idsubcat");
+        $cat = $bdd->execute("SELECT * FROM boutique_categories");
         ?>
             <section class="cbcat">
                 <h1 class="titlebcat">Catégorie</h1>
                 <?php
                     foreach ( $cat as $keys => $values ) {
-                        $subcat = $bdd->execute("SELECT * FROM subcategories WHERE id_categorie = $values[0]");
+                        $subcat = $bdd->execute("SELECT * FROM boutique_subcategories WHERE id_categorie = $values[0]");
                         ?>
                         <a href="boutique.php?idcat=<?php echo $values[0] ?>"><p class="bcat brown"><?php echo $values[1]; ?></p></a>
                         <?php
@@ -302,7 +302,7 @@ public function showShop($idcat, $idsubcat, $bdd) {
                             ?>
                         </p>
                         <?php
-                            $bestreviews = $bdd->executeassoc("SELECT AVG (note) as moyenne, id_article FROM avis WHERE id_article = $value[0] GROUP BY id_article");
+                            $bestreviews = $bdd->executeassoc("SELECT AVG (note) as moyenne, id_article FROM boutique_avis WHERE id_article = $value[0] GROUP BY id_article");
                             if ( !empty($bestreviews) ) {
                                 $this->showRating(round($bestreviews[0]['moyenne'], 1));
                             }
@@ -325,14 +325,14 @@ public function showShop($idcat, $idsubcat, $bdd) {
         <?php
     }
     elseif ( isset($idcat) && $idsubcat == "0" ) {
-        $products = $bdd->execute("SELECT * FROM articles WHERE id_categorie = $idcat");
-        $cat = $bdd->execute("SELECT * FROM categories");
+        $products = $bdd->execute("SELECT * FROM boutique_articles WHERE id_categorie = $idcat");
+        $cat = $bdd->execute("SELECT * FROM boutique_categories");
         ?>
             <section class="cbcat">
                 <h1 class="titlebcat">Catégorie</h1>
             <?php
                 foreach ( $cat as $keys => $values ) {
-                    $subcat = $bdd->execute("SELECT * FROM subcategories WHERE id_categorie = $values[0]");
+                    $subcat = $bdd->execute("SELECT * FROM boutique_subcategories WHERE id_categorie = $values[0]");
                     ?>
                         <a href="boutique.php?idcat=<?php echo $values[0] ?>"><p class="bcat brown"><?php echo $values[1]; ?></p></a>
                     <?php
@@ -367,7 +367,7 @@ public function showShop($idcat, $idsubcat, $bdd) {
                             ?>
                         </p>
                         <?php
-                            $bestreviews = $bdd->executeassoc("SELECT AVG (note) as moyenne, id_article FROM avis WHERE id_article = $value[0] GROUP BY id_article");
+                            $bestreviews = $bdd->executeassoc("SELECT AVG (note) as moyenne, id_article FROM boutique_avis WHERE id_article = $value[0] GROUP BY id_article");
                             if ( !empty($bestreviews) ) {
                                 $this->showRating(round($bestreviews[0]['moyenne'], 1));
                             }
@@ -404,7 +404,7 @@ public function showShop($idcat, $idsubcat, $bdd) {
 }
 
 public function showSearch($search, $bdd) {
-        $products = $bdd->execute("SELECT * FROM articles WHERE nom LIKE '%".$search."%'");
+        $products = $bdd->execute("SELECT * FROM boutique_articles WHERE nom LIKE '%".$search."%'");
         ?>
             <section class="cbshop">
             <?php
@@ -429,7 +429,7 @@ public function showSearch($search, $bdd) {
                             ?>
                         </p>
                         <?php
-                            $bestreviews = $bdd->executeassoc("SELECT AVG (note) as moyenne, id_article FROM avis WHERE id_article = $value[0] GROUP BY id_article");
+                            $bestreviews = $bdd->executeassoc("SELECT AVG (note) as moyenne, id_article FROM boutique_avis WHERE id_article = $value[0] GROUP BY id_article");
                             if ( !empty($bestreviews) ) {
                                 $this->showRating(round($bestreviews[0]['moyenne'], 1));
                             }

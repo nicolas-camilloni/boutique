@@ -8,23 +8,23 @@ include("affichage.php");
 $affichage = new Affichage;
 $bdd = new BDD;
 $gestion = new Gestion;
-$connect = $bdd->connect("localhost", "root", "", "boutique");
+$connect = $bdd->connect("db5000890310.hosting-data.io", "dbu594451", "S26n6j29p20m13!", "dbs781078");
 $idprod = $_GET["idprod"];
 $intidprod = intval($idprod);
-$getavis = $bdd->executeassoc("SELECT * FROM avis INNER JOIN articles ON avis.id_article = \"$idprod\" INNER JOIN utilisateurs ON avis.id_utilisateur = utilisateurs.id GROUP BY avis.id");
+$getavis = $bdd->executeassoc("SELECT * FROM boutique_avis INNER JOIN boutique_articles ON boutique_avis.id_article = \"$idprod\" INNER JOIN boutique_utilisateurs ON boutique_avis.id_utilisateur = boutique_utilisateurs.id GROUP BY boutique_avis.id");
 
-$getInfos = $bdd->execute("SELECT * FROM articles WHERE id = $idprod");
+$getInfos = $bdd->execute("SELECT * FROM boutique_articles WHERE id = $idprod");
 
 $prix = intval($getInfos[0][3]);
 $promo = intval($getInfos[0][4]);
 $newprix = ($prix - (($prix * $promo)/100));
 
-$getmoyenne = $bdd->executeassoc("SELECT AVG (note) as moyenne FROM avis WHERE id_article = \"$idprod\"");
+$getmoyenne = $bdd->executeassoc("SELECT AVG (note) as moyenne FROM boutique_avis WHERE id_article = \"$idprod\"");
 $floatmoyenne = floatval($getmoyenne[0]['moyenne']);
 date_default_timezone_set('Europe/Paris');
 $is10car = false;
 if (isset($_SESSION['login'])) {
-$getiduser = $bdd->executeassoc("SELECT * FROM utilisateurs WHERE login='".$_SESSION['login']."'");
+$getiduser = $bdd->executeassoc("SELECT * FROM boutique_utilisateurs WHERE login='".$_SESSION['login']."'");
 }
 if ( isset($_POST['envoyer']) == true && isset($_POST['message']) && strlen($_POST['message']) >= 10 ) {
     
@@ -32,7 +32,7 @@ if ( isset($_POST['envoyer']) == true && isset($_POST['message']) && strlen($_PO
     $note = $_POST['note'];
     $intnote = intval($note);
     $remsg = addslashes($msg);
-    $bdd->executeonly("INSERT INTO avis (id_utilisateur, id_article, message, note, date) VALUES (".$getiduser[0]['id'].", $intidprod ,'$remsg', $intnote, '".date("Y-m-d H:i:s")."')");
+    $bdd->executeonly("INSERT INTO boutique_avis (id_utilisateur, id_article, message, note, date) VALUES (".$getiduser[0]['id'].", $intidprod ,'$remsg', $intnote, '".date("Y-m-d H:i:s")."')");
     header("Location: produit.php?idprod=$intidprod");
     }
     elseif ( isset($_POST['envoyer']) == true && isset($_POST['message']) && strlen($_POST['message']) < 10 ) {

@@ -3,20 +3,20 @@
 class Panier {
 
     public function getProductInCart($idUtilisateur, $bdd) {
-        $getProduits = $bdd->execute("SELECT * FROM panier WHERE id_utilisateur = \"$idUtilisateur\"");
+        $getProduits = $bdd->execute("SELECT * FROM boutique_panier WHERE id_utilisateur = \"$idUtilisateur\"");
 
         return $getProduits;
     }
 
     public function delProductInCart($idProduct, $idUtilisateur, $bdd) {
-        $delProduits = $bdd->executeonly("DELETE FROM panier WHERE id = \"$idProduct\" AND id_utilisateur = \"$idUtilisateur\"");
+        $delProduits = $bdd->executeonly("DELETE FROM boutique_panier WHERE id = \"$idProduct\" AND id_utilisateur = \"$idUtilisateur\"");
     }
 
     public function showAll($idUtilisateur, $bdd) {
-        $getProduits = $bdd->execute("SELECT * FROM panier WHERE id_utilisateur = \"$idUtilisateur\"");
+        $getProduits = $bdd->execute("SELECT * FROM boutique_panier WHERE id_utilisateur = \"$idUtilisateur\"");
 
         foreach ( $getProduits as $key => $value ) {
-            $requeteconc = "SELECT * FROM articles WHERE id = ".$value[2];
+            $requeteconc = "SELECT * FROM boutique_articles WHERE id = ".$value[2];
             $getProduitsInfos = $bdd->execute("$requeteconc");
             ?>
             <section class="cpproduit">
@@ -71,7 +71,7 @@ class Panier {
     }
 
     public function panierRecap($idUtilisateur, $bdd) {
-        $getProduits = $bdd->execute("SELECT * FROM panier WHERE id_utilisateur = \"$idUtilisateur\"");
+        $getProduits = $bdd->execute("SELECT * FROM boutique_panier WHERE id_utilisateur = \"$idUtilisateur\"");
         $prixtotal = 0;
         foreach ( $getProduits as $key => $value ) {
             $prixtotal += $value[4];
@@ -110,10 +110,10 @@ class Panier {
     }
 
     public function updateQuantite($idUtilisateur, $bdd) {
-        $getProduits = $bdd->execute("SELECT * FROM panier WHERE id_utilisateur = \"$idUtilisateur\"");
+        $getProduits = $bdd->execute("SELECT * FROM boutique_panier WHERE id_utilisateur = \"$idUtilisateur\"");
 
         foreach ( $getProduits as $key => $value ) {
-            $getProduitsInfos = $bdd->execute("SELECT * FROM articles WHERE id = \"$value[2]\"");
+            $getProduitsInfos = $bdd->execute("SELECT * FROM boutique_articles WHERE id = \"$value[2]\"");
             // echo $getProduitsInfos[0][4];
             if ( isset($_POST["moins"]) ) {
                 if ( $_POST["moins"] == "moins".$value[0]) {
@@ -121,11 +121,11 @@ class Panier {
                         $prix = intval($getProduitsInfos[0][3]);
                         $promo = intval($getProduitsInfos[0][4]);
                         $newprix = ($prix - (($prix * $promo)/100));
-                        $bdd->executeonly("UPDATE panier SET quantite = quantite - 1, prix = prix - \"$newprix\" WHERE id = \"$value[0]\" AND id_utilisateur = \"$idUtilisateur\"");
+                        $bdd->executeonly("UPDATE boutique_panier SET quantite = quantite - 1, prix = prix - \"$newprix\" WHERE id = \"$value[0]\" AND id_utilisateur = \"$idUtilisateur\"");
                     }
                     else {
                         $prixArt = $getProduitsInfos[0][3];
-                        $bdd->executeonly("UPDATE panier SET quantite = quantite - 1, prix = prix - \"$prixArt\" WHERE id = \"$value[0]\" AND id_utilisateur = \"$idUtilisateur\"");
+                        $bdd->executeonly("UPDATE boutique_panier SET quantite = quantite - 1, prix = prix - \"$prixArt\" WHERE id = \"$value[0]\" AND id_utilisateur = \"$idUtilisateur\"");
                     }
                 }
             }
@@ -136,11 +136,11 @@ class Panier {
                         $prix = intval($getProduitsInfos[0][3]);
                         $promo = intval($getProduitsInfos[0][4]);
                         $newprix = ($prix - (($prix * $promo)/100));
-                        $bdd->executeonly("UPDATE panier SET quantite = quantite + 1, prix = prix + \"$newprix\" WHERE id = \"$value[0]\" AND id_utilisateur = \"$idUtilisateur\"");
+                        $bdd->executeonly("UPDATE boutique_panier SET quantite = quantite + 1, prix = prix + \"$newprix\" WHERE id = \"$value[0]\" AND id_utilisateur = \"$idUtilisateur\"");
                     }
                     else {
                         $prixArt = $getProduitsInfos[0][3];
-                        $bdd->executeonly("UPDATE panier SET quantite = quantite + 1, prix = prix + \"$prixArt\" WHERE id = \"$value[0]\" AND id_utilisateur = \"$idUtilisateur\"");
+                        $bdd->executeonly("UPDATE boutique_panier SET quantite = quantite + 1, prix = prix + \"$prixArt\" WHERE id = \"$value[0]\" AND id_utilisateur = \"$idUtilisateur\"");
                     }
                 }
             }
@@ -148,11 +148,11 @@ class Panier {
     }
     
     public function validPanier($idUtilisateur, $bdd) {
-        $getProduits = $bdd->execute("SELECT * FROM panier WHERE id_utilisateur = \"$idUtilisateur\"");
+        $getProduits = $bdd->execute("SELECT * FROM boutique_panier WHERE id_utilisateur = \"$idUtilisateur\"");
         $stop = false;
 
         foreach ( $getProduits as $key => $value ) {
-            $getProduitsInfos = $bdd->execute("SELECT * FROM articles WHERE id = \"$value[2]\"");
+            $getProduitsInfos = $bdd->execute("SELECT * FROM boutique_articles WHERE id = \"$value[2]\"");
             if ( $getProduitsInfos[0][7] - $value[3] >= 0 ) {
             }
             else {
@@ -165,19 +165,19 @@ class Panier {
                 $idArticle = $value[2];
                 $quantite = $value[3];
                 $prix = $value[4];
-                $bdd->executeonly("INSERT INTO achats (id_utilisateur, id_article, quantite, prix) VALUES ('$idUtilisateur', '$idArticle', '$quantite', '$prix')");
-                $bdd->executeonly("UPDATE articles SET stock = stock - $quantite WHERE id = \"$value[2]\"");
+                $bdd->executeonly("INSERT INTO boutique_achats (id_utilisateur, id_article, quantite, prix) VALUES ('$idUtilisateur', '$idArticle', '$quantite', '$prix')");
+                $bdd->executeonly("UPDATE boutique_articles SET stock = stock - $quantite WHERE id = \"$value[2]\"");
             }
-            $bdd->executeonly("DELETE FROM panier WHERE id_utilisateur = \"$idUtilisateur\"");
+            $bdd->executeonly("DELETE FROM boutique_panier WHERE id_utilisateur = \"$idUtilisateur\"");
         }
     }
 
     public function removeFromCart($idUtilisateur, $bdd) {
-        $getProduits = $bdd->execute("SELECT * FROM panier WHERE id_utilisateur = \"$idUtilisateur\"");
+        $getProduits = $bdd->execute("SELECT * FROM boutique_panier WHERE id_utilisateur = \"$idUtilisateur\"");
         foreach ( $getProduits as $key => $value ) {
             if ( isset($_POST["delCart"]) ) {
                 if ( $_POST["delCart"] == "delCart".$value[0]) {
-                    $bdd->executeonly("DELETE FROM panier WHERE id = \"$value[0]\" AND id_utilisateur = \"$idUtilisateur\"");
+                    $bdd->executeonly("DELETE FROM boutique_panier WHERE id = \"$value[0]\" AND id_utilisateur = \"$idUtilisateur\"");
                 }
             }
         }

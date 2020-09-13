@@ -5,7 +5,7 @@ include("utilisateur.php");
 include("bdd.php");
 $bdd = new BDD;
 $user = new Utilisateur;
-$connect = $bdd->connect("localhost", "root", "", "boutique");
+$connect = $bdd->connect("db5000890310.hosting-data.io", "dbu594451", "S26n6j29p20m13!", "dbs781078");
 $ischampremplis = false;
 
 if ( isset($_POST['connexion']) == true && isset($_POST['login']) && strlen($_POST['login']) != 0 && isset($_POST['password']) && strlen($_POST['password']) != 0 ) {

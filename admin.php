@@ -7,13 +7,12 @@ include("affichage.php");
 $bdd = new BDD;
 $gestion = new Gestion;
 $affichage = new Affichage;
-$connect = $bdd->connect("localhost", "root", "", "boutique");
-
+$connect = $bdd->connect("db5000890310.hosting-data.io", "dbu594451", "S26n6j29p20m13!", "dbs781078");
 
 if (isset($_POST['updatecat'])) {
     $newnom = $_POST['nom'];
     $newid = $_POST['idcat'];
-    $bdd->executeonly("UPDATE categories SET nom = \"$newnom\"  WHERE id = \"$newid\"");
+    $bdd->executeonly("UPDATE boutique_categories SET nom = \"$newnom\"  WHERE id = \"$newid\"");
 }
 
 if (isset($_POST['addcat'])) {
@@ -26,7 +25,7 @@ if (isset($_POST['updatesubcat'])) {
     $newsubnom = $_POST['subnom'];
     $newsubid = $_POST['idsubcat'];
     $newidparentcat = $_POST['idparentcat'];
-    $bdd->executeonly("UPDATE subcategories SET nom = \"$newsubnom\", id_categorie = \"$newidparentcat\"  WHERE id = \"$newsubid\"");
+    $bdd->executeonly("UPDATE boutique_subcategories SET nom = \"$newsubnom\", id_categorie = \"$newidparentcat\"  WHERE id = \"$newsubid\"");
 }
 
 if (isset($_POST['addsubcat'])) {
@@ -46,7 +45,7 @@ if (isset($_POST['updateprod'])) {
     $updescriptionprod = $_POST['descriptionprod'];
     $upstockprod = $_POST['stockprod'];
     $upidprod = $_POST['idprod'];
-    $bdd->executeonly("UPDATE articles SET id_categorie = \"$upcatprod\",nom = \"$upnomprod\",prix = \"$upprixprod\",promo = \"$uppromoprod\",img = \"$upimgprod\",description = \"$updescriptionprod\",stock=\"$upstockprod\", id_subcat=\"$upsubcatprod\" WHERE id = \"$upidprod\"");
+    $bdd->executeonly("UPDATE boutique_articles SET id_categorie = \"$upcatprod\",nom = \"$upnomprod\",prix = \"$upprixprod\",promo = \"$uppromoprod\",img = \"$upimgprod\",description = \"$updescriptionprod\",stock=\"$upstockprod\", id_subcat=\"$upsubcatprod\" WHERE id = \"$upidprod\"");
 }
 
 if (isset($_POST['addprod'])) {
@@ -78,7 +77,7 @@ if (isset($_POST['delsubcat'])) {
 
 if (isset($_POST['promote'])) {
     $idtopromote = $_POST['idpromote'];
-    $bdd->executeonly("UPDATE utilisateurs SET rank = \"1\" WHERE id = \"$idtopromote\"");
+    $bdd->executeonly("UPDATE boutique_utilisateurs SET rank = \"1\" WHERE id = \"$idtopromote\"");
 }
 ?>
 

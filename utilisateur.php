@@ -8,7 +8,7 @@ class Utilisateur {
 
     public function connexion($login, $password, $bdd) {
 
-        $isUserAlreadyExist = $bdd->execute("SELECT * FROM utilisateurs WHERE login = \"$login\"");
+        $isUserAlreadyExist = $bdd->execute("SELECT * FROM boutique_utilisateurs WHERE login = \"$login\"");
         // echo $requete;
         // var_dump($isUserAlreadyExist);
         if ( !empty($isUserAlreadyExist) ) {
@@ -29,7 +29,7 @@ class Utilisateur {
 
     public function inscription($login, $password, $cpassword, $mail, $adresse, $tel, $connect) {
                     $mdp = password_hash($password, PASSWORD_BCRYPT, array('cost' => 12));
-                    $requete3 = "SELECT login FROM utilisateurs WHERE login = '$login'";
+                    $requete3 = "SELECT login FROM boutique_utilisateurs WHERE login = '$login'";
                     $query3 = mysqli_query($connect, $requete3);
                     $resultat3 = mysqli_fetch_all($query3);
 
@@ -45,7 +45,7 @@ class Utilisateur {
                     }
                     else 
                     {
-                        $requete = "INSERT INTO utilisateurs (login, password, mail, adresse, rank, tel) VALUES ('$login','$mdp', '$mail', '$adresse', 0, '$tel')";
+                        $requete = "INSERT INTO boutique_utilisateurs (login, password, mail, adresse, rank, tel) VALUES ('$login','$mdp', '$mail', '$adresse', 0, '$tel')";
                         $query = mysqli_query($connect, $requete);
                         header('Location:connexion.php');
                     }
@@ -61,15 +61,15 @@ class Utilisateur {
                 }
                 else {
                     $mdp = password_hash($password, PASSWORD_BCRYPT, array('cost' => 12));
-                    $updatemdp = "UPDATE utilisateurs SET password = '$mdp' WHERE id = $id";
+                    $updatemdp = "UPDATE boutique_utilisateurs SET password = '$mdp' WHERE id = $id";
                     $query2 = mysqli_query($connect, $updatemdp);
-                    $updatelog = "UPDATE utilisateurs SET mail = '$email', adresse = '$adresse', tel = '$tel' WHERE id = '$id'";
+                    $updatelog = "UPDATE boutique_utilisateurs SET mail = '$email', adresse = '$adresse', tel = '$tel' WHERE id = '$id'";
                     $querylog = mysqli_query($connect, $updatelog);
                     header('Location:profil.php');
                 }
             }
             if ( empty($password) ) {
-                $updatelog2 = "UPDATE utilisateurs SET mail = '$email', adresse = '$adresse', tel = '$tel' WHERE id = '$id'";
+                $updatelog2 = "UPDATE boutique_utilisateurs SET mail = '$email', adresse = '$adresse', tel = '$tel' WHERE id = '$id'";
                 $querylog2 = mysqli_query($connect, $updatelog2);
                 header("Location:profil.php");
             }
@@ -77,9 +77,9 @@ class Utilisateur {
 
     public function mesAchats($bdd) {
         $id = $_SESSION['id'];
-        $myAchats = $bdd->execute("SELECT * FROM achats WHERE id_utilisateur = $id");
+        $myAchats = $bdd->execute("SELECT * FROM boutique_achats WHERE id_utilisateur = $id");
         foreach ( $myAchats as $key => $value ) {
-            $achatInfos = $bdd->execute("SELECT * FROM articles WHERE id = $value[2]");
+            $achatInfos = $bdd->execute("SELECT * FROM boutique_articles WHERE id = $value[2]");
             $achat = $achatInfos[0][2];
             ?>
             <p class="title1"><?php echo "- <span class=\"brown gras\">$achat</span> | Quantité: <span class=\"brown gras\">$value[3]</span> | Prix: <span class=\"brown gras\">$value[4]€</span>"; ?></p>

@@ -4,7 +4,7 @@ class Gestion {
 
 public function getCategorie($idCategorie, $bdd) {
         
-        $getCat = $bdd->executeassoc("SELECT * FROM categories WHERE id = \"$idCategorie\"");
+        $getCat = $bdd->executeassoc("SELECT * FROM boutique_categories WHERE id = \"$idCategorie\"");
          
         return $getCat;
         
@@ -12,28 +12,28 @@ public function getCategorie($idCategorie, $bdd) {
 
 public function addCategorie($nom, $id_utilisateur, $bdd){
 
-        $addCat = $bdd->executeonly("INSERT INTO categories (nom, id_utilisateur) VALUES ('$nom', '$id_utilisateur')");
+        $addCat = $bdd->executeonly("INSERT INTO boutique_categories (nom, id_utilisateur) VALUES ('$nom', '$id_utilisateur')");
 
         return $addCat;
 }
 
 public function addSubCategorie($nom, $id_categorie, $bdd){
 
-        $addSubCat = $bdd->executeonly("INSERT INTO subcategories (id_categorie, nom) VALUES ('$id_categorie','$nom')");
+        $addSubCat = $bdd->executeonly("INSERT INTO boutique_subcategories (id_categorie, nom) VALUES ('$id_categorie','$nom')");
 
         return $addSubCat;
 }
 
 public function delSubCategorie($idSubCategorie, $bdd){
 
-        $delSubCat = $bdd->executeonly("DELETE FROM subcategories WHERE id = \"$idSubCategorie\"");
+        $delSubCat = $bdd->executeonly("DELETE FROM boutique_subcategories WHERE id = \"$idSubCategorie\"");
 
         return $delSubCat;
 }
 
 public function getSubCategories($bdd) {
         
-        $getSubCats = $bdd->executeassoc("SELECT * FROM subcategories");
+        $getSubCats = $bdd->executeassoc("SELECT * FROM boutique_subcategories");
          
         return $getSubCats;
         
@@ -42,7 +42,7 @@ public function getSubCategories($bdd) {
 
 public function getCategories($bdd) {
         
-        $getCats = $bdd->executeassoc("SELECT * FROM categories");
+        $getCats = $bdd->executeassoc("SELECT * FROM boutique_categories");
          
         return $getCats;
         
@@ -50,7 +50,7 @@ public function getCategories($bdd) {
 
 public function getArticle($idarticle, $bdd) {
         
-        $getArticle = $bdd->executeassoc("SELECT * FROM articles WHERE id = \"$idarticle\"");
+        $getArticle = $bdd->executeassoc("SELECT * FROM boutique_articles WHERE id = \"$idarticle\"");
          
         return $getArticle;
         
@@ -58,7 +58,7 @@ public function getArticle($idarticle, $bdd) {
 
 public function getArticles($bdd) {
         
-        $getArticles = $bdd->executeassoc("SELECT * FROM articles");
+        $getArticles = $bdd->executeassoc("SELECT * FROM boutique_articles");
          
         return $getArticles;
         
@@ -66,7 +66,7 @@ public function getArticles($bdd) {
 
 public function addArticle($id_categorie, $nom, $prix, $promo, $img, $description, $stock, $subcat, $bdd){
 
-        $addArticle = $bdd->executeonly("INSERT INTO articles (id_categorie, nom, prix, promo, img, description, stock, id_subcat) VALUES ('$id_categorie', '$nom', '$prix', '$promo', '$img', '$description', '$stock', '$subcat')");
+        $addArticle = $bdd->executeonly("INSERT INTO boutique_articles (id_categorie, nom, prix, promo, img, description, stock, id_subcat) VALUES ('$id_categorie', '$nom', '$prix', '$promo', '$img', '$description', '$stock', '$subcat')");
 
         return $addArticle;
 }
@@ -74,14 +74,14 @@ public function addArticle($id_categorie, $nom, $prix, $promo, $img, $descriptio
 
 public function delArticle($idArticle, $bdd){
 
-        $delArticle = $bdd->executeonly("DELETE FROM articles WHERE id = \"$idArticle\"");
+        $delArticle = $bdd->executeonly("DELETE FROM boutique_articles WHERE id = \"$idArticle\"");
 
         return $delArticle;
 }
 
 public function delCategorie($idCategorie, $bdd){
 
-        $delCat = $bdd->executeonly("DELETE FROM categories WHERE id = \"$idCategorie\"");
+        $delCat = $bdd->executeonly("DELETE FROM boutique_categories WHERE id = \"$idCategorie\"");
 
         return $delCat;
 }
@@ -89,7 +89,7 @@ public function delCategorie($idCategorie, $bdd){
 public function addToCart($idarticle, $iduser, $qte, $prix, $promo, $bdd){
         $prixpromo = $prix - ($prix * ($promo/100));
         $prixtotal = $qte * $prixpromo;
-        $addArticle = $bdd->executeonly("INSERT INTO panier (id_utilisateur, id_article, quantite, prix) VALUES ('$iduser', '$idarticle', '$qte', '$prixtotal')");
+        $addArticle = $bdd->executeonly("INSERT INTO boutique_panier (id_utilisateur, id_article, quantite, prix) VALUES ('$iduser', '$idarticle', '$qte', '$prixtotal')");
 
         }
 
